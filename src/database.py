@@ -1,0 +1,44 @@
+
+import oracledb
+import os
+
+class DatabaseManager:
+    def __init__(self):
+        
+        user = os.environ.get('DB_USER', 'usuario_padrao')
+        password = os.environ.get('DB_PASSWORD', 'senha_padrao')
+        dsn = os.environ.get('DB_DSN', 'seu_host:1521/sua_instancia')
+
+        try:
+            self.connection = oracledb.connect(user=user, password=password, dsn=dsn)
+            self.cursor = self.connection.cursor()
+            print("✅ Conexão com o Oracle DB estabelecida com sucesso.")
+        except oracledb.DatabaseError as e:
+            print(f"❌ Falha ao conectar ao Oracle DB: {e}")
+            self.connection = None
+            self.cursor = None
+
+    def insert_detection(self, moto_id, x, y, model_name=None):
+        
+        if not self.cursor:
+            print("⚠️ Não há conexão ativa com o banco de dados.")
+            return
+
+        sql = """
+            INSERT INTO Detections (moto_id, center_x, center_y, model_name)
+            VALUES (:1, :2, :3, :4)
+        """
+        try:
+            self.cursor.execute(sql, [moto_id, x, y, model_name])
+            self.connection.commit()
+            print(f"💾 Detecção registrada: {moto_id} - {model_name}")
+        except oracledb.DatabaseError as e:
+            print(f"❌ Erro ao inserir detecção no banco: {e}")
+
+    def close(self):
+       
+        if self.cursor:
+            self.cursor.close()
+        if self.connection:
+            self.connection.close()
+            print("🔒 Conexão com o Oracle DB encerrada.")
