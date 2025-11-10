@@ -81,7 +81,7 @@ def processa_frame(frame, tracking_model, roboflow_client, db_manager, api_clien
 
     return annotated_frame, motos_no_frame_atual, total_motos_detectadas, contagem_modelos
 
-def gerencia_eventos(motos_presentes, motos_no_frame_atual, motos_desaparecidas, log_eventos, api_client):
+def gerencia_eventos(motos_presentes, motos_no_frame_atual, motos_desaparecidas, log_eventos):
     motos_que_entraram = motos_no_frame_atual - motos_presentes
     for moto_id in motos_que_entraram:
         msg = f"ENTRADA: {moto_id} detectada."
