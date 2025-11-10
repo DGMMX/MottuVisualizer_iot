@@ -3,11 +3,10 @@ import oracledb
 import os
 
 class DatabaseManager:
-    def __init__(self):
-        
-        user = os.environ.get('DB_USER', 'usuario_padrao')
-        password = os.environ.get('DB_PASSWORD', 'senha_padrao')
-        dsn = os.environ.get('DB_DSN', 'seu_host:1521/sua_instancia')
+     def __init__(self):
+        user = os.environ.get('DB_USER', 'RM558710')
+        password = os.environ.get('DB_PASSWORD', '250902')
+        dsn = os.environ.get('DB_DSN', 'oracle.fiap.com.br:1521/orcl')
 
         try:
             self.connection = oracledb.connect(user=user, password=password, dsn=dsn)
